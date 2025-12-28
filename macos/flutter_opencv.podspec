@@ -29,6 +29,13 @@ A new Flutter FFI plugin project.
   s.dependency 'FlutterMacOS'
 
   s.platform = :osx, '10.11'
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
+  s.pod_target_xcconfig = { 
+    'DEFINES_MODULE' => 'YES',
+    'HEADER_SEARCH_PATHS' => '$(inherited) /opt/homebrew/opt/opencv/include/opencv4',
+    'LIBRARY_SEARCH_PATHS' => '$(inherited) /opt/homebrew/opt/opencv/lib',
+    'OTHER_LDFLAGS' => '$(inherited) -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_videoio -lopencv_highgui',
+    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
+    'CLANG_CXX_LIBRARY' => 'libc++'
+  }
   s.swift_version = '5.0'
 end
