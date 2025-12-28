@@ -26,7 +26,7 @@ class FlutterOpencvBindings {
     ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
   ) : _lookup = lookup;
 
-  /// Version
+  /// 버전
   ffi.Pointer<ffi.Char> opencv_version() {
     return _opencv_version();
   }
@@ -38,7 +38,7 @@ class FlutterOpencvBindings {
   late final _opencv_version = _opencv_versionPtr
       .asFunction<ffi.Pointer<ffi.Char> Function()>();
 
-  /// Memory Management
+  /// 메모리 관리
   ffi.Pointer<CvMat> cv_mat_create() {
     return _cv_mat_create();
   }
@@ -61,7 +61,7 @@ class FlutterOpencvBindings {
   late final _cv_mat_release = _cv_mat_releasePtr
       .asFunction<void Function(ffi.Pointer<CvMat>)>();
 
-  /// Image I/O
+  /// 이미지 입출력
   ffi.Pointer<CvMat> cv_imread(ffi.Pointer<ffi.Char> filename) {
     return _cv_imread(filename);
   }
@@ -125,7 +125,7 @@ class FlutterOpencvBindings {
   late final _cv_free_bytes = _cv_free_bytesPtr
       .asFunction<void Function(BytesResult)>();
 
-  /// Basic Processing
+  /// 색상 변환
   ffi.Pointer<CvMat> cv_cvtColor_bgr2gray(ffi.Pointer<CvMat> mat) {
     return _cv_cvtColor_bgr2gray(mat);
   }
@@ -137,7 +137,62 @@ class FlutterOpencvBindings {
   late final _cv_cvtColor_bgr2gray = _cv_cvtColor_bgr2grayPtr
       .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>();
 
-  /// Transforms
+  ffi.Pointer<CvMat> cv_cvtColor_bgr2rgb(ffi.Pointer<CvMat> mat) {
+    return _cv_cvtColor_bgr2rgb(mat);
+  }
+
+  late final _cv_cvtColor_bgr2rgbPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>
+      >('cv_cvtColor_bgr2rgb');
+  late final _cv_cvtColor_bgr2rgb = _cv_cvtColor_bgr2rgbPtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>();
+
+  ffi.Pointer<CvMat> cv_cvtColor_bgr2hsv(ffi.Pointer<CvMat> mat) {
+    return _cv_cvtColor_bgr2hsv(mat);
+  }
+
+  late final _cv_cvtColor_bgr2hsvPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>
+      >('cv_cvtColor_bgr2hsv');
+  late final _cv_cvtColor_bgr2hsv = _cv_cvtColor_bgr2hsvPtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>();
+
+  ffi.Pointer<CvMat> cv_cvtColor_hsv2bgr(ffi.Pointer<CvMat> mat) {
+    return _cv_cvtColor_hsv2bgr(mat);
+  }
+
+  late final _cv_cvtColor_hsv2bgrPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>
+      >('cv_cvtColor_hsv2bgr');
+  late final _cv_cvtColor_hsv2bgr = _cv_cvtColor_hsv2bgrPtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>();
+
+  ffi.Pointer<CvMat> cv_cvtColor_bgr2lab(ffi.Pointer<CvMat> mat) {
+    return _cv_cvtColor_bgr2lab(mat);
+  }
+
+  late final _cv_cvtColor_bgr2labPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>
+      >('cv_cvtColor_bgr2lab');
+  late final _cv_cvtColor_bgr2lab = _cv_cvtColor_bgr2labPtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>();
+
+  ffi.Pointer<CvMat> cv_cvtColor_lab2bgr(ffi.Pointer<CvMat> mat) {
+    return _cv_cvtColor_lab2bgr(mat);
+  }
+
+  late final _cv_cvtColor_lab2bgrPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>
+      >('cv_cvtColor_lab2bgr');
+  late final _cv_cvtColor_lab2bgr = _cv_cvtColor_lab2bgrPtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>();
+
+  /// 변환
   ffi.Pointer<CvMat> cv_resize(
     ffi.Pointer<CvMat> mat,
     int width,
@@ -163,7 +218,6 @@ class FlutterOpencvBindings {
         ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int, int, int)
       >();
 
-  /// mode: 0=x-axis, 1=y-axis, -1=both
   ffi.Pointer<CvMat> cv_flip(ffi.Pointer<CvMat> mat, int mode) {
     return _cv_flip(mat, mode);
   }
@@ -177,7 +231,6 @@ class FlutterOpencvBindings {
   late final _cv_flip = _cv_flipPtr
       .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int)>();
 
-  /// code: 0=90cw, 1=180, 2=90ccw
   ffi.Pointer<CvMat> cv_rotate(ffi.Pointer<CvMat> mat, int code) {
     return _cv_rotate(mat, code);
   }
@@ -191,7 +244,7 @@ class FlutterOpencvBindings {
   late final _cv_rotate = _cv_rotatePtr
       .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int)>();
 
-  /// Filters
+  /// 필터
   ffi.Pointer<CvMat> cv_gaussian_blur(
     ffi.Pointer<CvMat> mat,
     int kernelSize,
@@ -209,6 +262,44 @@ class FlutterOpencvBindings {
   late final _cv_gaussian_blur = _cv_gaussian_blurPtr
       .asFunction<
         ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int, double)
+      >();
+
+  ffi.Pointer<CvMat> cv_median_blur(ffi.Pointer<CvMat> mat, int kernelSize) {
+    return _cv_median_blur(mat, kernelSize);
+  }
+
+  late final _cv_median_blurPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, ffi.Int)
+        >
+      >('cv_median_blur');
+  late final _cv_median_blur = _cv_median_blurPtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int)>();
+
+  ffi.Pointer<CvMat> cv_bilateral_filter(
+    ffi.Pointer<CvMat> mat,
+    int d,
+    double sigmaColor,
+    double sigmaSpace,
+  ) {
+    return _cv_bilateral_filter(mat, d, sigmaColor, sigmaSpace);
+  }
+
+  late final _cv_bilateral_filterPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(
+            ffi.Pointer<CvMat>,
+            ffi.Int,
+            ffi.Double,
+            ffi.Double,
+          )
+        >
+      >('cv_bilateral_filter');
+  late final _cv_bilateral_filter = _cv_bilateral_filterPtr
+      .asFunction<
+        ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int, double, double)
       >();
 
   ffi.Pointer<CvMat> cv_canny(
@@ -234,7 +325,327 @@ class FlutterOpencvBindings {
         ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, double, double)
       >();
 
-  /// Drawing (In-place)
+  ffi.Pointer<CvMat> cv_sobel(
+    ffi.Pointer<CvMat> mat,
+    int dx,
+    int dy,
+    int ksize,
+  ) {
+    return _cv_sobel(mat, dx, dy, ksize);
+  }
+
+  late final _cv_sobelPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(
+            ffi.Pointer<CvMat>,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+          )
+        >
+      >('cv_sobel');
+  late final _cv_sobel = _cv_sobelPtr
+      .asFunction<
+        ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int, int, int)
+      >();
+
+  ffi.Pointer<CvMat> cv_laplacian(ffi.Pointer<CvMat> mat, int ksize) {
+    return _cv_laplacian(mat, ksize);
+  }
+
+  late final _cv_laplacianPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, ffi.Int)
+        >
+      >('cv_laplacian');
+  late final _cv_laplacian = _cv_laplacianPtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int)>();
+
+  ffi.Pointer<CvMat> cv_sharpen(ffi.Pointer<CvMat> mat) {
+    return _cv_sharpen(mat);
+  }
+
+  late final _cv_sharpenPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>
+      >('cv_sharpen');
+  late final _cv_sharpen = _cv_sharpenPtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>();
+
+  /// 형태학 연산
+  ffi.Pointer<CvMat> cv_erode(
+    ffi.Pointer<CvMat> mat,
+    int kernelSize,
+    int iterations,
+  ) {
+    return _cv_erode(mat, kernelSize, iterations);
+  }
+
+  late final _cv_erodePtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, ffi.Int, ffi.Int)
+        >
+      >('cv_erode');
+  late final _cv_erode = _cv_erodePtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int, int)>();
+
+  ffi.Pointer<CvMat> cv_dilate(
+    ffi.Pointer<CvMat> mat,
+    int kernelSize,
+    int iterations,
+  ) {
+    return _cv_dilate(mat, kernelSize, iterations);
+  }
+
+  late final _cv_dilatePtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, ffi.Int, ffi.Int)
+        >
+      >('cv_dilate');
+  late final _cv_dilate = _cv_dilatePtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int, int)>();
+
+  ffi.Pointer<CvMat> cv_morphology_ex(
+    ffi.Pointer<CvMat> mat,
+    int op,
+    int kernelSize,
+  ) {
+    return _cv_morphology_ex(mat, op, kernelSize);
+  }
+
+  late final _cv_morphology_exPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, ffi.Int, ffi.Int)
+        >
+      >('cv_morphology_ex');
+  late final _cv_morphology_ex = _cv_morphology_exPtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, int, int)>();
+
+  /// 임계값 처리
+  ffi.Pointer<CvMat> cv_threshold(
+    ffi.Pointer<CvMat> mat,
+    double thresh,
+    double maxval,
+    int type,
+  ) {
+    return _cv_threshold(mat, thresh, maxval, type);
+  }
+
+  late final _cv_thresholdPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(
+            ffi.Pointer<CvMat>,
+            ffi.Double,
+            ffi.Double,
+            ffi.Int,
+          )
+        >
+      >('cv_threshold');
+  late final _cv_threshold = _cv_thresholdPtr
+      .asFunction<
+        ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, double, double, int)
+      >();
+
+  ffi.Pointer<CvMat> cv_adaptive_threshold(
+    ffi.Pointer<CvMat> mat,
+    double maxValue,
+    int adaptiveMethod,
+    int thresholdType,
+    int blockSize,
+    double C,
+  ) {
+    return _cv_adaptive_threshold(
+      mat,
+      maxValue,
+      adaptiveMethod,
+      thresholdType,
+      blockSize,
+      C,
+    );
+  }
+
+  late final _cv_adaptive_thresholdPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(
+            ffi.Pointer<CvMat>,
+            ffi.Double,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Double,
+          )
+        >
+      >('cv_adaptive_threshold');
+  late final _cv_adaptive_threshold = _cv_adaptive_thresholdPtr
+      .asFunction<
+        ffi.Pointer<CvMat> Function(
+          ffi.Pointer<CvMat>,
+          double,
+          int,
+          int,
+          int,
+          double,
+        )
+      >();
+
+  /// 히스토그램
+  ffi.Pointer<CvMat> cv_equalize_hist(ffi.Pointer<CvMat> mat) {
+    return _cv_equalize_hist(mat);
+  }
+
+  late final _cv_equalize_histPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>
+      >('cv_equalize_hist');
+  late final _cv_equalize_hist = _cv_equalize_histPtr
+      .asFunction<ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>)>();
+
+  /// 노이즈 제거
+  ffi.Pointer<CvMat> cv_fast_nl_means_denoising(
+    ffi.Pointer<CvMat> mat,
+    double h,
+    int templateWindowSize,
+    int searchWindowSize,
+  ) {
+    return _cv_fast_nl_means_denoising(
+      mat,
+      h,
+      templateWindowSize,
+      searchWindowSize,
+    );
+  }
+
+  late final _cv_fast_nl_means_denoisingPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(
+            ffi.Pointer<CvMat>,
+            ffi.Float,
+            ffi.Int,
+            ffi.Int,
+          )
+        >
+      >('cv_fast_nl_means_denoising');
+  late final _cv_fast_nl_means_denoising = _cv_fast_nl_means_denoisingPtr
+      .asFunction<
+        ffi.Pointer<CvMat> Function(ffi.Pointer<CvMat>, double, int, int)
+      >();
+
+  ffi.Pointer<CvMat> cv_fast_nl_means_denoising_colored(
+    ffi.Pointer<CvMat> mat,
+    double h,
+    double hColor,
+    int templateWindowSize,
+    int searchWindowSize,
+  ) {
+    return _cv_fast_nl_means_denoising_colored(
+      mat,
+      h,
+      hColor,
+      templateWindowSize,
+      searchWindowSize,
+    );
+  }
+
+  late final _cv_fast_nl_means_denoising_coloredPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<CvMat> Function(
+            ffi.Pointer<CvMat>,
+            ffi.Float,
+            ffi.Float,
+            ffi.Int,
+            ffi.Int,
+          )
+        >
+      >('cv_fast_nl_means_denoising_colored');
+  late final _cv_fast_nl_means_denoising_colored =
+      _cv_fast_nl_means_denoising_coloredPtr
+          .asFunction<
+            ffi.Pointer<CvMat> Function(
+              ffi.Pointer<CvMat>,
+              double,
+              double,
+              int,
+              int,
+            )
+          >();
+
+  ContoursResult cv_find_contours(
+    ffi.Pointer<CvMat> mat,
+    int mode,
+    int method,
+  ) {
+    return _cv_find_contours(mat, mode, method);
+  }
+
+  late final _cv_find_contoursPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ContoursResult Function(ffi.Pointer<CvMat>, ffi.Int, ffi.Int)
+        >
+      >('cv_find_contours');
+  late final _cv_find_contours = _cv_find_contoursPtr
+      .asFunction<ContoursResult Function(ffi.Pointer<CvMat>, int, int)>();
+
+  void cv_free_contours(ContoursResult result) {
+    return _cv_free_contours(result);
+  }
+
+  late final _cv_free_contoursPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ContoursResult)>>(
+        'cv_free_contours',
+      );
+  late final _cv_free_contours = _cv_free_contoursPtr
+      .asFunction<void Function(ContoursResult)>();
+
+  void cv_draw_contours(
+    ffi.Pointer<CvMat> mat,
+    ContoursResult contours,
+    int contourIdx,
+    int r,
+    int g,
+    int b,
+    int thickness,
+  ) {
+    return _cv_draw_contours(mat, contours, contourIdx, r, g, b, thickness);
+  }
+
+  late final _cv_draw_contoursPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Void Function(
+            ffi.Pointer<CvMat>,
+            ContoursResult,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+            ffi.Int,
+          )
+        >
+      >('cv_draw_contours');
+  late final _cv_draw_contours = _cv_draw_contoursPtr
+      .asFunction<
+        void Function(
+          ffi.Pointer<CvMat>,
+          ContoursResult,
+          int,
+          int,
+          int,
+          int,
+          int,
+        )
+      >();
+
+  /// 그리기
   void cv_rectangle(
     ffi.Pointer<CvMat> mat,
     int x,
@@ -428,7 +839,7 @@ class FlutterOpencvBindings {
   late final _cv_videocapture_set = _cv_videocapture_setPtr
       .asFunction<void Function(ffi.Pointer<CvVideoCapture>, int, double)>();
 
-  /// Accessors
+  /// 속성 접근자
   int cv_mat_width(ffi.Pointer<CvMat> mat) {
     return _cv_mat_width(mat);
   }
@@ -498,7 +909,7 @@ class _SymbolAddresses {
   get cv_videocapture_release => _library._cv_videocapture_releasePtr;
 }
 
-/// Opaque pointer to cv::Mat
+/// cv::Mat 포인터
 typedef CvMat = ffi.Void;
 typedef DartCvMat = void;
 
@@ -509,6 +920,16 @@ final class BytesResult extends ffi.Struct {
   external int len;
 }
 
-/// Opaque pointer to cv::VideoCapture
+/// 컨투어 관련
+final class ContoursResult extends ffi.Struct {
+  external ffi.Pointer<ffi.Pointer<ffi.Int>> contours;
+
+  external ffi.Pointer<ffi.Int> contour_sizes;
+
+  @ffi.Int()
+  external int num_contours;
+}
+
+/// cv::VideoCapture 포인터
 typedef CvVideoCapture = ffi.Void;
 typedef DartCvVideoCapture = void;

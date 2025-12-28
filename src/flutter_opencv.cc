@@ -65,6 +65,41 @@ FFI_PLUGIN_EXPORT CvMat* cv_cvtColor_bgr2gray(CvMat* mat) {
     return (CvMat*)new cv::Mat(gray);
 }
 
+FFI_PLUGIN_EXPORT CvMat* cv_cvtColor_bgr2rgb(CvMat* mat) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat rgb;
+    cv::cvtColor(*(cv::Mat*)mat, rgb, cv::COLOR_BGR2RGB);
+    return (CvMat*)new cv::Mat(rgb);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_cvtColor_bgr2hsv(CvMat* mat) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat hsv;
+    cv::cvtColor(*(cv::Mat*)mat, hsv, cv::COLOR_BGR2HSV);
+    return (CvMat*)new cv::Mat(hsv);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_cvtColor_hsv2bgr(CvMat* mat) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat bgr;
+    cv::cvtColor(*(cv::Mat*)mat, bgr, cv::COLOR_HSV2BGR);
+    return (CvMat*)new cv::Mat(bgr);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_cvtColor_bgr2lab(CvMat* mat) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat lab;
+    cv::cvtColor(*(cv::Mat*)mat, lab, cv::COLOR_BGR2Lab);
+    return (CvMat*)new cv::Mat(lab);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_cvtColor_lab2bgr(CvMat* mat) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat bgr;
+    cv::cvtColor(*(cv::Mat*)mat, bgr, cv::COLOR_Lab2BGR);
+    return (CvMat*)new cv::Mat(bgr);
+}
+
 FFI_PLUGIN_EXPORT CvMat* cv_resize(CvMat* mat, int width, int height, int interpolation) {
     if (mat == nullptr) return nullptr;
     cv::Mat dst;
@@ -94,11 +129,185 @@ FFI_PLUGIN_EXPORT CvMat* cv_gaussian_blur(CvMat* mat, int kernelSize, double sig
     return (CvMat*)new cv::Mat(dst);
 }
 
+FFI_PLUGIN_EXPORT CvMat* cv_median_blur(CvMat* mat, int kernelSize) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    if (kernelSize % 2 == 0) kernelSize++; // 홀수로 보정
+    cv::medianBlur(*(cv::Mat*)mat, dst, kernelSize);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_bilateral_filter(CvMat* mat, int d, double sigmaColor, double sigmaSpace) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::bilateralFilter(*(cv::Mat*)mat, dst, d, sigmaColor, sigmaSpace);
+    return (CvMat*)new cv::Mat(dst);
+}
+
 FFI_PLUGIN_EXPORT CvMat* cv_canny(CvMat* mat, double threshold1, double threshold2) {
     if (mat == nullptr) return nullptr;
     cv::Mat dst;
     cv::Canny(*(cv::Mat*)mat, dst, threshold1, threshold2);
     return (CvMat*)new cv::Mat(dst);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_sobel(CvMat* mat, int dx, int dy, int ksize) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::Sobel(*(cv::Mat*)mat, dst, CV_8U, dx, dy, ksize);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_laplacian(CvMat* mat, int ksize) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::Laplacian(*(cv::Mat*)mat, dst, CV_8U, ksize);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_sharpen(CvMat* mat) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::Mat kernel = (cv::Mat_<float>(3,3) << 
+        0, -1, 0,
+        -1, 5, -1,
+        0, -1, 0);
+    cv::filter2D(*(cv::Mat*)mat, dst, -1, kernel);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+// 형태학 연산
+FFI_PLUGIN_EXPORT CvMat* cv_erode(CvMat* mat, int kernelSize, int iterations) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(kernelSize, kernelSize));
+    cv::erode(*(cv::Mat*)mat, dst, kernel, cv::Point(-1, -1), iterations);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_dilate(CvMat* mat, int kernelSize, int iterations) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(kernelSize, kernelSize));
+    cv::dilate(*(cv::Mat*)mat, dst, kernel, cv::Point(-1, -1), iterations);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_morphology_ex(CvMat* mat, int op, int kernelSize) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(kernelSize, kernelSize));
+    cv::morphologyEx(*(cv::Mat*)mat, dst, op, kernel);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+// 임계값 처리
+FFI_PLUGIN_EXPORT CvMat* cv_threshold(CvMat* mat, double thresh, double maxval, int type) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::threshold(*(cv::Mat*)mat, dst, thresh, maxval, type);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_adaptive_threshold(CvMat* mat, double maxValue, int adaptiveMethod, int thresholdType, int blockSize, double C) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    if (blockSize % 2 == 0) blockSize++; // 홀수로 보정
+    cv::adaptiveThreshold(*(cv::Mat*)mat, dst, maxValue, adaptiveMethod, thresholdType, blockSize, C);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+// 히스토그램
+FFI_PLUGIN_EXPORT CvMat* cv_equalize_hist(CvMat* mat) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::Mat src = *(cv::Mat*)mat;
+    
+    // 그레이스케일인 경우
+    if (src.channels() == 1) {
+        cv::equalizeHist(src, dst);
+    } else {
+        // 컬러 이미지는 YCrCb로 변환 후 Y 채널만 평활화
+        cv::Mat ycrcb;
+        cv::cvtColor(src, ycrcb, cv::COLOR_BGR2YCrCb);
+        std::vector<cv::Mat> channels;
+        cv::split(ycrcb, channels);
+        cv::equalizeHist(channels[0], channels[0]);
+        cv::merge(channels, ycrcb);
+        cv::cvtColor(ycrcb, dst, cv::COLOR_YCrCb2BGR);
+    }
+    return (CvMat*)new cv::Mat(dst);
+}
+
+// 노이즈 제거
+FFI_PLUGIN_EXPORT CvMat* cv_fast_nl_means_denoising(CvMat* mat, float h, int templateWindowSize, int searchWindowSize) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::fastNlMeansDenoising(*(cv::Mat*)mat, dst, h, templateWindowSize, searchWindowSize);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+FFI_PLUGIN_EXPORT CvMat* cv_fast_nl_means_denoising_colored(CvMat* mat, float h, float hColor, int templateWindowSize, int searchWindowSize) {
+    if (mat == nullptr) return nullptr;
+    cv::Mat dst;
+    cv::fastNlMeansDenoisingColored(*(cv::Mat*)mat, dst, h, hColor, templateWindowSize, searchWindowSize);
+    return (CvMat*)new cv::Mat(dst);
+}
+
+// 컨투어
+FFI_PLUGIN_EXPORT struct ContoursResult cv_find_contours(CvMat* mat, int mode, int method) {
+    struct ContoursResult result = {nullptr, nullptr, 0};
+    if (mat == nullptr) return result;
+    
+    std::vector<std::vector<cv::Point>> contours;
+    cv::findContours(*(cv::Mat*)mat, contours, mode, method);
+    
+    result.num_contours = contours.size();
+    if (result.num_contours == 0) return result;
+    
+    result.contours = (int**)malloc(sizeof(int*) * result.num_contours);
+    result.contour_sizes = (int*)malloc(sizeof(int) * result.num_contours);
+    
+    for (int i = 0; i < result.num_contours; i++) {
+        result.contour_sizes[i] = contours[i].size();
+        result.contours[i] = (int*)malloc(sizeof(int) * 2 * contours[i].size());
+        for (size_t j = 0; j < contours[i].size(); j++) {
+            result.contours[i][j * 2] = contours[i][j].x;
+            result.contours[i][j * 2 + 1] = contours[i][j].y;
+        }
+    }
+    
+    return result;
+}
+
+FFI_PLUGIN_EXPORT void cv_free_contours(struct ContoursResult result) {
+    if (result.contours != nullptr) {
+        for (int i = 0; i < result.num_contours; i++) {
+            free(result.contours[i]);
+        }
+        free(result.contours);
+    }
+    if (result.contour_sizes != nullptr) {
+        free(result.contour_sizes);
+    }
+}
+
+FFI_PLUGIN_EXPORT void cv_draw_contours(CvMat* mat, struct ContoursResult contours, int contourIdx, int r, int g, int b, int thickness) {
+    if (mat == nullptr || contours.contours == nullptr) return;
+    
+    std::vector<std::vector<cv::Point>> cvContours;
+    for (int i = 0; i < contours.num_contours; i++) {
+        std::vector<cv::Point> contour;
+        for (int j = 0; j < contours.contour_sizes[i]; j++) {
+            contour.push_back(cv::Point(
+                contours.contours[i][j * 2],
+                contours.contours[i][j * 2 + 1]
+            ));
+        }
+        cvContours.push_back(contour);
+    }
+    
+    cv::drawContours(*(cv::Mat*)mat, cvContours, contourIdx, cv::Scalar(b, g, r), thickness);
 }
 
 FFI_PLUGIN_EXPORT void cv_rectangle(CvMat* mat, int x, int y, int width, int height, int r, int g, int b, int thickness) {

@@ -4,30 +4,57 @@ Dart FFI를 통해 OpenCV C++ 라이브러리를 Flutter에서 사용하는 플�
 
 ## 주요 기능
 
-### 이미지 처리 (`CvImage`)
+### 🎨 색상 변환
 
-- 파일/바이트 배열에서 이미지 로드
-- Grayscale 변환
-- Gaussian Blur 필터
-- Canny Edge Detection
-- 이미지 리사이즈
-- 회전 (90도 단위)
+- BGR ↔ Grayscale, RGB, HSV, LAB
 
-### 그리기
+### 🔄 이미지 변환
 
-- 사각형, 원, 선 그리기
+- 리사이즈, 회전, 뒤집기
 
-### 비디오 캡처 (`CvVideoCapture`)
+### 🌫️ 블러/필터
 
-- 웹캠 접근
-- 실시간 프레임 캡처
-- 해상도 설정
+- Gaussian Blur, Median Blur, Bilateral Filter
+- Sharpen
+
+### 📐 엣지 검출
+
+- Canny, Sobel, Laplacian
+
+### ✨ 이미지 향상
+
+- 히스토그램 평활화
+- 노이즈 제거 (Non-local Means)
+
+### 🔲 형태학 연산
+
+- Erode, Dilate, Open, Close, Gradient, Tophat, Blackhat
+
+### 🎯 임계값 처리
+
+- 고정 임계값, 적응형 임계값
+
+### ✏️ 그리기
+
+- 사각형, 원, 선
+
+### 📹 비디오 캡처
+
+- 웹캠 실시간 프레임 캡처
+
+> 📖 **[전체 기능 목록 및 사용 예제 보기](FEATURES.md)**
 
 ## 설치
 
 ### 필수 요구사항
 
 OpenCV 라이브러리 설치 필요.
+
+#### macOS
+
+```bash
+brew install opencv
+```
 
 #### Linux
 
@@ -49,6 +76,53 @@ dependencies:
 ### 이미지 처리
 
 ```dart
+// 이미지 로드
+final image = CvImage.fromFile('path/to/image.jpg');
+
+// 색상 변환
+final gray = image.toGrayscale();
+final hsv = image.toHsv();
+
+// 필터 적용
+final blurred = image.gaussianBlur(5, 1.5);
+final denoised = image.medianBlur(5);
+final edges = image.canny(100, 200);
+
+// 이미지 향상
+final enhanced = image.equalizeHist();
+final sharpened = image.sharpen();
+
+// 형태학 연산
+final opened = gray.morphologyEx(2, 5); // MORPH_OPEN
+
+// 임계값 처리
+final binary = gray.threshold(127, 255);
+final adaptive = gray.adaptiveThreshold(255, 1, 0, 11, 2);
+
+// 변환
+final resized = image.resize(800, 600);
+final rotated = image.rotate(0); // 90도 시계방향
+
+// 인코딩
+final bytes = image.encode(ext: '.jpg');
+```
+
+### 비디오 캡처
+
+```dart
+final capture = CvVideoCapture.create(0);
+if (capture != null) {
+  // 프레임 읽기
+  final frame = CvImage.wrap(/* ... */);
+  if (capture.read(frame)) {
+    // 프레임 처리
+  }
+  capture.dispose();
+}
+```
+
+## 사용 방법dart
+
 import 'package:flutter_opencv/flutter_opencv.dart';
 
 CvImage? img = CvImage.fromFile('/path/to/image.jpg');
@@ -64,7 +138,6 @@ if (img != null) {
   resized.dispose();
   gray.dispose();
 }
-```
 
 ### 카메라 연동
 

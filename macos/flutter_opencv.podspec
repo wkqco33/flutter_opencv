@@ -33,7 +33,7 @@ A new Flutter FFI plugin project.
     'DEFINES_MODULE' => 'YES',
     'HEADER_SEARCH_PATHS' => '$(inherited) /opt/homebrew/opt/opencv/include/opencv4',
     'LIBRARY_SEARCH_PATHS' => '$(inherited) /opt/homebrew/opt/opencv/lib',
-    'OTHER_LDFLAGS' => '$(inherited) -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_videoio -lopencv_highgui',
+    'OTHER_LDFLAGS' => '$(inherited) -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_videoio -lopencv_highgui -lopencv_photo',
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
     'CLANG_CXX_LIBRARY' => 'libc++'
   }
